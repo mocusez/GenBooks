@@ -27,7 +27,7 @@ jobs:
         pip3 install bs4
     - name: 执行程序
       run: |
-        python3 -B ./src/genBook.py
+        python3 ./src/genBook.py
       env: 
           config: ${{ secrets.CONFIG }}
     - name: update to repo
