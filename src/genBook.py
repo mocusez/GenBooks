@@ -10,7 +10,7 @@ config = os.environ.get("config",'''
 {
     "title":"你的推送名字",
     "feeds": [
-        {"name":"知乎热榜","url":"https://rsshub.xsnet.top/zhihu/hotlist","saveimg":false,"imgquality":20,"css":"img.avatar,a.originUrl,div.view-more{display:none;}span.bio,span.author{font-size:0.7em;}div.question{margin-bottom:2cm;}"},
+        {"name":"知乎热榜","url":"https://rsshub.xsnet.top/zhihu/hotlist","saveimg":true,"imgquality":20,"css":"img.avatar,a.originUrl,div.view-more{display:none;}span.bio,span.author{font-size:0.7em;}div.question{margin-bottom:2cm;}"},
         {"name":"左岸读书","url":"https://rsshub.app/zreading","saveimg":false,"imgquality":100}    
     ],
     "emailinfo": {
@@ -31,7 +31,7 @@ config = os.environ.get("config",'''
         "epub": false,
         "mobi": true
     },
-    "Github": false
+    "Github": true
 }
 ''')
 
@@ -89,7 +89,7 @@ def convert_to_mobi(input_file, output_file):
     out = process.communicate()
     #print ("Result : "+out.decode() )
     #print(str(out))
-    if(output_file in str(out)):
+    if(output_file in str(out).encode('raw_unicode_escape').decode()):
         logging.info("mobi 创建成功")
     else:
         logging.info("mobi 创建失败")
@@ -145,7 +145,7 @@ def do_one_round():
             os.remove(mobiFile)
         project.save_epub(epubinfo,savepath=epubFile)
         logging.info("Del Temp folder")
-        shutil.rmtree("./temp/")
+        #shutil.rmtree("./temp/")
         logging.info("Epub2Mobi")
         convert_to_mobi(epubFile, mobiFile)
         ###################################文件创建完成，开始发送部分
