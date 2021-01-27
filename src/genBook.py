@@ -65,14 +65,22 @@ def get_start(fname):
     '''
     return pytz.utc.localize(datetime.fromtimestamp(os.path.getmtime(fname)))
     '''
-    '''
-    with open("./config/time.txt","r") as f:
+    with open("./config/time.txt","w+") as f:
         timeStamp = int(f.read())
+        #获取完start立即写入，确保时间间隔为最小
+        f.write(str(int(time.mktime(datetime.now(pytz.timezone('UTC')).timetuple()))))
         f.close()
+    '''
+    #获取完start立即写入，确保时间间隔为最小
+    logging.info("save this stamp to file.")
+    with open("./config/time.txt","w") as f:
+        #f.write("1611509501")
+        f.close()
+    '''
     #logging.info(pytz.utc.localize(datetime.fromtimestamp(timeStamp)))
-    return pytz.timezone('Asia/Shanghai').localize(datetime.fromtimestamp(timeStamp))'''
+    return pytz.timezone('UTC').localize(datetime.fromtimestamp(timeStamp))
     #86400适用于每天推送一次
-    return pytz.timezone('UTC').localize(datetime.fromtimestamp(time.time()-86400))#发现有些Rss源的pubtime和显示在源上的time是不对称的，很难过，还没有想到更好的解决办法
+    #return pytz.timezone('UTC').localize(datetime.fromtimestamp(time.time()-86400))#发现有些Rss源的pubtime和显示在源上的time是不对称的，很难过，还没有想到更好的解决办法
 
 def convert_to_mobi(input_file, output_file):
     cmd = ['ebook-convert', input_file, output_file]
@@ -116,6 +124,7 @@ def sendEmail(send_from, send_to, subject, text, files):
 def do_one_round():
     # get all posts from starting point to now
     start = get_start(feed_file)
+    
     logging.info(f"Collecting posts since {start} UTC")
     logging.info(f"Convert Rss to json( need a long time if pic needed)")
     #generJson
@@ -168,17 +177,13 @@ def do_one_round():
             logging.info("webdav上传完成")
         else:
             logging.info("webdav is disabled, skip")
-        '''
-        #目前不需要保存时间戳以及保存在github，故屏蔽
-        logging.info("save this stamp to file.")
-        with open("./config/time.txt","w") as f:
-            f.write(str(int(time.mktime(datetime.now(pytz.timezone('Asia/Shanghai')).timetuple()))))
-            #f.write("1611509501")
-            f.close()
+        
+        logging.info("upload file to github repo")
         if(config["Github"]==False):
             os.remove(epubFile)
             os.remove(mobiFile)
-        '''
+            logging.info("upload is disabled, skip")
+
     else:
         shutil.rmtree("./temp/")
         logging.info("RSS无更新，取消执行")
