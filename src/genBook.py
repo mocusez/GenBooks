@@ -94,7 +94,7 @@ def sendEmail(send_from, send_to, subject, text, files):
     msg['To'] = send_to
     msg['Date'] = formatdate(localtime=True)
     msg['Subject'] = subject
-    msg.attach(MIMEText(text, 'text', 'utf-8'))
+    msg.attach(MIMEText(text, 'plain', 'utf-8'))
 
     for f in files or []:
         with open(f, "rb") as fil:
