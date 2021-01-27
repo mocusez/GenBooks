@@ -145,7 +145,7 @@ def do_one_round():
             os.remove(mobiFile)
         project.save_epub(epubinfo,savepath=epubFile)
         logging.info("Del Temp folder")
-        #shutil.rmtree("./temp/")
+        shutil.rmtree("./temp/")
         logging.info("Epub2Mobi")
         convert_to_mobi(epubFile, mobiFile)
         ###################################文件创建完成，开始发送部分
