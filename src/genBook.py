@@ -89,7 +89,7 @@ def convert_to_mobi(input_file, output_file):
     out = process.communicate()
     #print ("Result : "+out.decode() )
     #print(str(out))
-    if(output_file in str(out).encode('raw_unicode_escape').decode()):
+    if("saved" in str(out)):
         logging.info("mobi 创建成功")
     else:
         logging.info("mobi 创建失败")
