@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO)
 
 config = os.environ.get("config",'''
 {
-    "title":"星索的RSS推送",
+    "title":"你的推送名字",
     "feeds": [
         {"name":"知乎热榜","url":"https://rsshub.xsnet.top/zhihu/hotlist","saveimg":false,"imgquality":20,"css":"img.avatar,a.originUrl,div.view-more{display:none;}span.bio,span.author{font-size:0.7em;}div.question{margin-bottom:2cm;}"},
         {"name":"左岸读书","url":"https://rsshub.app/zreading","saveimg":false,"imgquality":100}    
@@ -136,8 +136,8 @@ def do_one_round():
         logging.info(f"发现{project.updatenum}条RSS更新，开始Json2Epub")
         epubinfo = project.json2epub(json,booktitle)
         logging.info("Epub转换成功，准备保存Epub")
-        epubFile = "dailyRss.epub"
-        mobiFile = "dailyRss.mobi"
+        epubFile = f"{booktitle}.epub"
+        mobiFile = F"{booktitle}.mobi"
         logging.info(f"删除旧的书籍(如果有)")
         if(os.path.exists(epubFile)):
             os.remove(epubFile)

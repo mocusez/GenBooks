@@ -35,8 +35,13 @@ class processRss:
         # When all is said and done,
         return posts
     def downloadimg(self,url,imgid,thisformat,compress_quality):
+        headers = {
+            'upgrade-insecure-requests': 1,
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36 Edg/88.0.705.50'
+        }
         with open(f"./temp/OEBPS/img{self.imgid}.{thisformat}","wb")as f:
-            f.write(requests.get(url).content)
+            f.write(requests.get(url,headers=headers).content)
             f.close()
         #print("download")
         try:

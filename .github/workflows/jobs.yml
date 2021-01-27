@@ -3,7 +3,7 @@ name: 生成书籍
 on:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '0 22 * * *' # 6:00 （GMT+8）
+    - cron:  '0 22,10 * * *' # 6:00,18:00 （GMT+8）
   watch:
     types: started
 
