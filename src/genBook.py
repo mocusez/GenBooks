@@ -65,7 +65,7 @@ def get_start(fname):
     '''
     return pytz.utc.localize(datetime.fromtimestamp(os.path.getmtime(fname)))
     '''
-    with open("./config/time.txt","w+") as f:
+    with open("./config/time.txt","r+") as f:
         timeStamp = int(f.read())
         #获取完start立即写入，确保时间间隔为最小
         f.write(str(int(time.mktime(datetime.now(pytz.timezone('UTC')).timetuple()))))
