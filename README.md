@@ -16,9 +16,7 @@ Gen epub and mobi Books from RSS with github action
 
 ~~1.24 暂不支持图片显示，缩小文件体积~~
 
-暂无
-
-当前默认时区为东八区，GMT+8，暂不打算多时区支持
+~~当前默认时区为东八区，GMT+8，暂不打算多时区支持~~   无需考虑时区
 
 图片默认转换为黑白，暂不打算修改
 
@@ -73,7 +71,7 @@ Gen epub and mobi Books from RSS with github action
 
 4. 在./github/workflow里面修改想推送的时间和频率
 
-   参考crontab，默认为北京时间6：00发送，6:00GMT(22:00UTC)
+   参考crontab，默认为北京时间6：00，18：00发送，6:00GMT+8(22:00UTC)18:00GMT+8(10:00UTC)
 
 5. 点击github action，点击star进行测试
 
