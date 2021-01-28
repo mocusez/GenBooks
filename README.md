@@ -3,7 +3,7 @@ Gen epub and mobi Books from RSS with github action
 
 # 特点
 
-1. 支持epub和mobi格式，支持邮箱（用于kindle）和webdav发送。
+1. 支持epub和mobi格式，支持邮箱（用于kindle）和webdav以及telegram_Bot发送。
 2. 部署在github action，免去服务费用以及GAE部署的账号问题
 3. 1/25支持自定义下载图片以及更改图片压缩比例
 4. 支持单个rss自定义css
@@ -60,8 +60,18 @@ Gen epub and mobi Books from RSS with github action
    		"epub": true,
    		"mobi": true 
    	},
-   	"Github": true,
-       "note":"是否上传到github repo，默认上传两个文件，不支持修改"
+   	"telegram":{
+           "enable":false,
+           "token":"",
+           "chat_id":"",
+           "epub":true,
+           "mobi":true
+       },
+       "Github": {
+           "enable":fasle,
+           "epub":false,
+           "mobi":false
+       }
    }
    ```
 
