@@ -8,30 +8,41 @@ logging.basicConfig(level=logging.INFO)
 
 config = os.environ.get("config",'''
 {
-    "title":"你的推送名字",
+    "title":"星索的RSS推送",
     "feeds": [
-        {"name":"知乎热榜","url":"https://rsshub.xsnet.top/zhihu/hotlist","saveimg":true,"imgquality":20,"css":"img.avatar,a.originUrl,div.view-more{display:none;}span.bio,span.author{font-size:0.7em;}div.question{margin-bottom:2cm;}"},
-        {"name":"左岸读书","url":"https://rsshub.app/zreading","saveimg":false,"imgquality":100}    
+        {"name":"知乎热榜","url":"https://rsshub.xsnet.top/zhihu/hotlist?limit=30","saveimg":true,"imgquality":20,"css":"img.avatar,a.originUrl,div.view-more{display:none;}span.bio,span.author{font-size:0.7em;}div.question{margin-bottom:2cm;}"}
+        
     ],
     "emailinfo": {
         "enable": false,
-        "to": "@kindle.cn",
-        "from": "@.cn",
-        "smtp": "smtp..cn",
+        "to": "Oo0080Ooo00ooO8@kindle.cn",
+        "from": "chang_cy@outlook.com",
+        "smtp": "smtp-mail.outlook.com",
         "port": 25,
-        "pwd": "",
+        "pwd": "MarMt36@",
         "epub": false,
         "mobi": true
     },
     "webdav":{
         "enable":false,
         "server":"https://dav.jianguoyun.com/dav/genrss/",
-        "user":"@.cn",
-        "pwd":"",
+        "user":"15318188117@189.cn",
+        "pwd":"a6ebdh9nwq57xzbk",
         "epub": false,
         "mobi": true
     },
-    "Github": true
+    "telegram":{
+        "enable":false,
+        "token":"",
+        "chat_id":"",
+        "epub":true,
+        "mobi":true
+    },
+    "github": {
+        "enable":false,
+        "epub":false,
+        "mobi":false
+    }
 }
 ''')
 
@@ -89,7 +100,7 @@ def convert_to_mobi(input_file, output_file):
     out = process.communicate()
     #print ("Result : "+out.decode() )
     #print(str(out))
-    if("saved" in str(out)):
+    if(".mobi" in str(out)):
         logging.info("mobi 创建成功")
     else:
         logging.info("mobi 创建失败")
@@ -149,6 +160,7 @@ def do_one_round():
         logging.info("Epub2Mobi")
         convert_to_mobi(epubFile, mobiFile)
         ###################################文件创建完成，开始发送部分
+        ##执行邮件发送动作
         logging.info("send file by email")
         if(emailInfo["enable"]==True):
             attachfile=[]
@@ -163,6 +175,7 @@ def do_one_round():
                         files=attachfile)
         else:
             logging.info("Email is disabled, skip")
+        #执行webdav动作
         logging.info("send file by webdav")
         if(webdavInfo["enable"]==True):
             attachfile=[]
@@ -178,13 +191,24 @@ def do_one_round():
             logging.info("webdav上传完成")
         else:
             logging.info("webdav is disabled, skip")
-        
+        ##执行telegram发送动作
+        logging.info("upload file to telegram")
+        if(config["telegram"]["epub"]):
+            requests.post(f'https://api.telegram.org/bot{config["telegram"]["token"]}/sendDocument?chat_id={config["telegram"]["chat_id"]}', files = {"Document".lower(): open(epubFile,"rb")})
+        if(config["telegram"]["mobi"]):
+            requests.post(f'https://api.telegram.org/bot{config["telegram"]["token"]}/sendDocument?chat_id={config["telegram"]["chat_id"]}', files = {"Document".lower(): open(mobiFile,"rb")})
+        ##执行github动作
+        ##因为github会删除文档，所以要最后执行
         logging.info("upload file to github repo")
-        if(config["Github"]==False):
+        if(config["github"]["enable"]==False):
             os.remove(epubFile)
             os.remove(mobiFile)
             logging.info("upload is disabled, skip")
-
+        else:
+            if(config["github"]["epub"]==False):
+                os.remove(epubFile)
+            if(config["github"]["mobi"]==False):
+                os.remove(mobiFile)
     else:
         shutil.rmtree("./temp/")
         logging.info("RSS无更新，取消执行")
