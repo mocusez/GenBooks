@@ -15,19 +15,19 @@ config = os.environ.get("config",'''
     ],
     "emailinfo": {
         "enable": false,
-        "to": "Oo0080Ooo00ooO8@kindle.cn",
-        "from": "chang_cy@outlook.com",
+        "to": "@kindle.cn",
+        "from": "@outlook.com",
         "smtp": "smtp-mail.outlook.com",
         "port": 25,
-        "pwd": "MarMt36@",
+        "pwd": "",
         "epub": false,
         "mobi": true
     },
     "webdav":{
         "enable":false,
         "server":"https://dav.jianguoyun.com/dav/genrss/",
-        "user":"15318188117@189.cn",
-        "pwd":"a6ebdh9nwq57xzbk",
+        "user":"@.cn",
+        "pwd":"",
         "epub": false,
         "mobi": true
     },
